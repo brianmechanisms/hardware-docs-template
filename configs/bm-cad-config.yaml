@@ -2,27 +2,6 @@ render:
   repo: "render"
   dir: "render"
   template: "brianmechanisms/render-template"
-  name: "Pacar-2 Concept"
+  name: "Hardware Docs"
   private: false
-  owner: "brianmechanisms"
-render1:
-  repo: "render"
-  dir: "render"
-  template: "pacars/render-template"
-  name: "Pacar-2 Concept"
-  private: false
-  owner: "pacars"
-render2:
-  repo: "render2"
-  dir: "render"
-  template: "pacars/render-template"
-  name: "Pacar-2 Concept"
-  private: false
-  owner: "pacars"
-meshes:
-  repo: "meshes"
-  dir: "meshes"
-  template: "pacars/meshes-template"
-  name: "Pacar-2 Concept"
-  privates: false
   owner: "brianmechanisms"
