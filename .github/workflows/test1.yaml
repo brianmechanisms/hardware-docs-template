@@ -43,6 +43,7 @@ jobs:
           OWNER: ${{ matrix.owner }}
           TEMPLATE: ${{ matrix.template }}
           REPO: ${{ matrix.repo }}
+          PRIVATE: ${{ matrix.private }}
         run: /bin/bash scripts/createRepo.sh 
       - name: add-secrets
         uses: gliech/create-github-secret-action@v1

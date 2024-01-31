@@ -17,7 +17,11 @@ else
     # Check the exit status
     if [ "$http_status_code" -ne 201 ]; then
         echo "Failed to create repository. Response: $http_status_code for $template => $owner/$repo"
-        curl -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer $GH_PAT" -H "X-GitHub-Api-Version: 2022-11-28" "https://api.github.com/repos/$template/generate" -d "{\"owner\":\"$owner\",\"name\":\"$repo\",\"description\":\"$repo\",\"include_all_branches\":true,\"private\":false}"
+        if [ "$private" == "false" ]; then
+            curl -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer $GH_PAT" -H "X-GitHub-Api-Version: 2022-11-28" "https://api.github.com/repos/$template/generate" -d "{\"owner\":\"$owner\",\"name\":\"$repo\",\"description\":\"$repo\",\"include_all_branches\":true,\"private\":false}"
+        else 
+            curl -X POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: Bearer $GH_PAT" -H "X-GitHub-Api-Version: 2022-11-28" "https://api.github.com/repos/$template/generate" -d "{\"owner\":\"$owner\",\"name\":\"$repo\",\"description\":\"$repo\",\"include_all_branches\":true,\"private\":true}"
+        fi
         #exit 1
     else
         echo "Repository $owner/$repo created successfully!"
