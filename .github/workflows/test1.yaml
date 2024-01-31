@@ -63,7 +63,26 @@ jobs:
         run: |
           if [ -d "${{ matrix.dir }}" ]; then
             mkdir -p "tmp-${{ matrix.repo }}/${{ matrix.dir }}/${{ env.ORG_NAME}}/${{ matrix.name }}/"
+            rm -rf "tmp-${{ matrix.repo }}/${{ matrix.dir }}/${{ env.ORG_NAME }}/${{ matrix.name }}/"*
             rsync -av "${{ matrix.dir }}/" "tmp-${{ matrix.repo }}/${{ matrix.dir }}/${{ env.ORG_NAME}}/${{ matrix.name }}/"
+            if [ ! -f "tmp-${{ matrix.repo }}/env_file" ]; then
+                touch "tmp-${{ matrix.repo }}/env_file"
+            fi
+            # File path to the environment file
+            env_file="tmp-${{ matrix.repo }}/env_file"
+            #cat $env_file
+            # Variable and its value to add
+            variable="${{ matrix.name }}"
+            value=$(basename ${{ github.repository }})
+            #echo "$variable=>$value"
+            # Check if the variable already exists in the file
+            if ! grep -q "^$variable=" "$env_file"; then
+                echo "$variable=$value" >> "$env_file"
+            else 
+                #sed -i "s|^$variable=.*/$variable=$new_value/" "$env_file"
+                sed -i "s/^${variable//[-]/\\-}=.*/$variable=$value/" "$env_file"
+            fi
+            #cat $env_file
           else
             echo "Directory '${{ matrix.dir }}' does not exist."
             #exit 1
@@ -80,3 +99,23 @@ jobs:
           destination-repository-name: ${{ matrix.repo }}
           user-email: "github-actions[bot]@users.noreply.github.com"
           target-branch: master
+  push_to_public:
+    if: github.repository == 'brianmechanisms/hardware-docs-template-private'
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v3
+      - name: Remove files
+        run: |
+          rm -rf .git
+      - name: Push to public repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+            DEPLOY_TOKEN: ${{ secrets[format('DEPLOY_TOKEN_{0}', github.repository_owner)] }}
+            API_TOKEN_GITHUB: ${{ secrets[format('DEPLOY_TOKEN_{0}', github.repository_owner)] }}
+            SOURCE_DIR: "./"
+        with:
+            source-directory: ${{ env.SOURCE_DIR }}
+            destination-github-username: ${{ github.repository_owner }}
+            destination-repository-name: "hardware-docs-template"
+            user-email: "github-actions[bot]@users.noreply.github.com"
+            target-branch: master

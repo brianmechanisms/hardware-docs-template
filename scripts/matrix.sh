@@ -19,7 +19,7 @@ if [ -n "$first_yaml_file" ]; then
         done
         template_owner="${template%%/*}"
         owner_uppercase=$(echo "$owner" | tr '[:lower:]' '[:upper:]')
-        echo "{\"repopath\":\"$owner/$repo\", \"dir\":\"$dir\", \"repo\":\"$repo\", \"name\":\"$name\", \"owner\":\"$owner\", \"template_owner\":\"$template_owner\", \"OWNER_UPPERCASE\":\"$owner_uppercase\", \"template\":\"$template\", \"private\":\"$private\"   }">> config.json
+        echo "{\"repopath\":\"$owner/$repo\", \"dir\":\"$dir\", \"repo\":\"$repo\", \"name\":\"$name\", \"owner\":\"$owner\", \"template_owner\":\"$template_owner\", \"OWNER_UPPERCASE\":\"$owner_uppercase\", \"template\":\"$template\", \"private\":\"$private\"  }">> config.json
         echo "," >> config.json
                 
     done
